@@ -36,9 +36,10 @@ public class Grafo {
         ciudades = adjList.keySet().toArray(new String[n]);
         distancias = new int[n][n];
         caminos = new int[n][n];
-
+        indices.clear(); // Limpiar el mapa de índices
+    
         for (int i = 0; i < n; i++) {
-            indices.put(ciudades[i], i);
+            indices.put(ciudades[i], i); // Asignar el índice de la ciudad en el mapa de índices
             for (int j = 0; j < n; j++) {
                 if (i == j) {
                     distancias[i][j] = 0;
@@ -48,7 +49,8 @@ public class Grafo {
                 caminos[i][j] = j;
             }
         }
-
+    
+        // Llenar la matriz de distancias con los valores del grafo
         for (String ciudad : adjList.keySet()) {
             int i = indices.get(ciudad);
             for (Arista arista : adjList.get(ciudad)) {
@@ -107,4 +109,59 @@ public class Grafo {
         }
     }
    
+    public String ciudadCentroDelGrafo() {
+        if (adjList.isEmpty()) {
+            return "El grafo está vacío";
+        }
+    
+        int n = adjList.size();
+        int[][] distancias = new int[n][n];
+        int[][] caminos = new int[n][n];
+    
+        // Inicializar distancias y caminos
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(distancias[i], Integer.MAX_VALUE / 2);
+            Arrays.fill(caminos[i], -1);
+            distancias[i][i] = 0;
+        }
+    
+        // Llenar la matriz de distancias con los valores del grafo
+        for (String ciudad : adjList.keySet()) {
+            int i = indices.get(ciudad);
+            for (Arista arista : adjList.get(ciudad)) {
+                int j = indices.get(arista.destino);
+                distancias[i][j] = arista.km;
+                caminos[i][j] = j;
+            }
+        }
+    
+        // Algoritmo de Floyd-Warshall
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (distancias[i][k] != Integer.MAX_VALUE && distancias[k][j] != Integer.MAX_VALUE &&
+                            distancias[i][j] > distancias[i][k] + distancias[k][j]) {
+                        distancias[i][j] = distancias[i][k] + distancias[k][j];
+                        caminos[i][j] = caminos[i][k];
+                    }
+                }
+            }
+        }
+    
+        // Encontrar la ciudad con la menor suma de distancias
+        int minSuma = Integer.MAX_VALUE;
+        String ciudadCentro = null;
+        for (int i = 0; i < n; i++) {
+            int sumaDistancias = 0;
+            for (int j = 0; j < n; j++) {
+                sumaDistancias += distancias[i][j];
+            }
+            if (sumaDistancias < minSuma) {
+                minSuma = sumaDistancias;
+                ciudadCentro = ciudades[i];
+            }
+        }
+    
+        return ciudadCentro;
+    }
 }

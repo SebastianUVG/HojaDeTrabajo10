@@ -56,6 +56,8 @@ public class App
                     break;
 
                 case 2: 
+                    String ciudadCentro = grafo.ciudadCentroDelGrafo();
+                    System.out.println("La ciudad en el centro del grafo es: " + ciudadCentro);
                     break;
 
                 case 3: 
