@@ -24,7 +24,7 @@ public class App
      * @param archivo El nombre del archivo de texto.
      */
     private static void CargarGrafo(String archivo){
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\sebas\\OneDrive\\Escritorio\\Github\\EstructuraDeDatos\\HojaDeTrabajo10\\hdt10\\src\\main\\java\\uvg\\"+archivo))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(" ");
