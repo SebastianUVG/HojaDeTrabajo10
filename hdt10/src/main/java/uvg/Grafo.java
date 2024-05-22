@@ -1,3 +1,9 @@
+/** 
+ * @author Sebastian Garcia
+ * @version 1.0
+*/
+
+
 /**
  * Esta clase representa un grafo no dirigido. Cada ciudad está representada por un String,
  * y las aristas están representadas por objetos Arista.
@@ -12,7 +18,7 @@ public class Grafo {
     /**
      * Un mapa que mapea cada ciudad a una lista de aristas de salida.
      */
-    private Map<String, List<Arista>> adjList;
+    Map<String, List<Arista>> adjList;
 
     /**
      * Un mapa que mapea cada ciudad a su índice dentro del arreglo de ciudades.
@@ -51,6 +57,17 @@ public class Grafo {
     public void agregarArista(String ciudad1, String ciudad2, int km) {
         this.adjList.putIfAbsent(ciudad1, new ArrayList<>());
         this.adjList.putIfAbsent(ciudad2, new ArrayList<>());
+    
+        // Verificar si la arista ya existe
+        for (Arista arista : adjList.get(ciudad1)) {
+            if (arista.destino.equals(ciudad2)) {
+                // Si la arista ya existe, actualizar la distancia
+                arista.km = km;
+                return; // Salir del método
+            }
+        }
+    
+        // Si la arista no existe, agregarla
         this.adjList.get(ciudad1).add(new Arista(ciudad2, km));
         this.adjList.get(ciudad2).add(new Arista(ciudad1, km)); // Si el grafo es no dirigido
     }
@@ -285,5 +302,13 @@ public class Grafo {
         floydWarshall();
     }
 
+    
+    public int[][] obtenerDistancias() {
+        return distancias;
+    }
+
+    public Map<String, Integer> obtenerIndices() {
+        return indices;
+    }
 
 }

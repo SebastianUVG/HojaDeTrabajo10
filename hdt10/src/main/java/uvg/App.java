@@ -1,3 +1,8 @@
+/** 
+ * @author Sebastian Garcia
+ * @version 1.0
+*/
+
 package uvg;
 import java.net.Socket;
 import java.util.Scanner;
